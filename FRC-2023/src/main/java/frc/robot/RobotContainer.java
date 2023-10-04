@@ -17,6 +17,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 // auto sequences
 import frc.robot.commands.Autonomous.AutoSequence;
 import frc.robot.commands.Autonomous.ScoreLowAuto;
+import frc.robot.commands.Autonomous.TwoPiece;
 import frc.robot.commands.Autonomous.ReleaseArm;
 import frc.robot.commands.Autonomous.ScoreHighAuto;
 import frc.robot.commands.Drivetrain.ArcadeDrive;
@@ -199,6 +200,9 @@ public class RobotContainer {
 
   private GyroBalanceNoArm m_gyroBalanceNoPiece = new GyroBalanceNoArm(m_drivetrain);
 
+  // time is experimental - needs to be tested
+  private TwoPiece m_twoPiece = new TwoPiece(m_arm, m_elevator, m_rollerIntake, m_drivetrain, 1.5);
+
   
   // private Limelight m_limelight = new Limelight();
   // private Turret m_turret = new Turret();
@@ -235,6 +239,9 @@ public class RobotContainer {
     // gyro balance auto (NO PIECE)
     // Robot MUST be facing away from the scoring grid
     m_autoChooser.addOption("gyro_balance_no_piece", m_gyroBalanceNoPiece);
+    
+    // two piece (needs to be tested)
+    m_autoChooser.addOption("two_piece", m_twoPiece);
 
     SmartDashboard.putData(m_autoChooser);
 

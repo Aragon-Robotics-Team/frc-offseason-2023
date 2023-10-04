@@ -4,6 +4,7 @@
 
 package frc.robot.commands.Gyro;
 
+// use roll!
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Drivetrain;
@@ -28,8 +29,7 @@ public class GyroBalance extends CommandBase {
   private double m_initPosition;
  
   /** Creates a new GyroBalance. */
-  public GyroBalance(Drivetrain drivetrain, double initAngle) {
-    m_initPosition= initAngle;
+  public GyroBalance(Drivetrain drivetrain) {
     m_drivetrain = drivetrain;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(m_drivetrain);
@@ -39,7 +39,7 @@ public class GyroBalance extends CommandBase {
   @Override
   public void initialize() {
     m_timer.start();
-    // m_initPosition = m_drivetrain.getAngle()
+    m_initPosition = m_drivetrain.getRoll();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -51,13 +51,14 @@ public class GyroBalance extends CommandBase {
     if (m_timer.hasElapsed(2.55)){
 
       // this can be collapsed into one if statement - use abs value
-      if (m_drivetrain.getAngle() - m_initPosition >= Config.kDeadband){
-        //Drive towards game piece hub
-        m_drivetrain.getDrive().arcadeDrive(-Config.kFactor*Config.kSpeed*(m_drivetrain.getAngle() - m_initPosition)/360, 0);
+      if (m_drivetrain.getRoll() - m_initPosition >= Config.kDeadband){
+        // Drive towards game piece hub
+        // speed capped at 0.4
+        m_drivetrain.getDrive().arcadeDrive(Math.max(-Config.kFactor*Config.kSpeed*(m_drivetrain.getRoll() - m_initPosition)/360, 0.4), 0);
       }
-      else if (m_drivetrain.getAngle() - m_initPosition <= -Config.kDeadband){
-        //Drive away from game piece hub
-        m_drivetrain.getDrive().arcadeDrive(Config.kFactor*Config.kSpeed*(m_drivetrain.getAngle() - m_initPosition)/360, 0);
+      else if (m_drivetrain.getRoll() - m_initPosition <= -Config.kDeadband){
+        // Drive away from game piece hub
+        m_drivetrain.getDrive().arcadeDrive(Math.max(Config.kFactor*Config.kSpeed*(m_drivetrain.getRoll() - m_initPosition)/360, 0.4), 0);
       }
     }
   }
@@ -73,8 +74,7 @@ public class GyroBalance extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return m_drivetrain.getAngle() - m_initPosition <= Config.kDeadband && m_drivetrain.getAngle() - m_initPosition >= -Config.kDeadband && m_timer.hasElapsed(7);
-    // return m_drivetrain.getAngle() - m_initPosition <= Config.kDeadband && m_drivetrain.getAngle() - m_initPosition >= -Config.kDeadband && m_timer.hasElapsed(7);
+    return m_drivetrain.getRoll() - m_initPosition <= Config.kDeadband && m_drivetrain.getRoll() - m_initPosition >= -Config.kDeadband && m_timer.hasElapsed(7);
     // return false;
   }
 }

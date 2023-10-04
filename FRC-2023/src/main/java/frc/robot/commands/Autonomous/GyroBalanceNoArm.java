@@ -33,7 +33,7 @@ public class GyroBalanceNoArm extends SequentialCommandGroup {
        */
 
       // new ParallelCommandGroup(new GyroBalance(drivetrain), new SequentialCommandGroup(new WaitCommand(0.5), new MoveForTime(drivetrain, 2, true)))
-      new SequentialCommandGroup(new WaitCommand(0.5), new MoveForTime(drivetrain, 4, true), new GyroBalance(drivetrain, drivetrain.getAngle()))
+      new SequentialCommandGroup(new WaitCommand(0.5), new MoveForTime(drivetrain, 4, true), new GyroBalance(drivetrain))
     );
   }
 }

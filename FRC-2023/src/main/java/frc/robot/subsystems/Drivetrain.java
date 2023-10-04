@@ -8,19 +8,24 @@ import com.ctre.phoenix.music.Orchestra;
 
 // import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import com.kauailabs.navx.frc.AHRS;
+
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.SPI;
 
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 public class Drivetrain extends SubsystemBase {
   
   /** Creates a new Drivetrain. */
-  private static final class Config{
+  private static final class Config {
     public static final int kLeftPrimaryID = 1;
     public static final int kRightPrimaryID = 3;
     public static final int kLeftSecondaryID = 2;
     public static final int kRightSecondaryID = 4;
   }
+
+  
   private WPI_TalonFX m_leftPrimary = new WPI_TalonFX(Config.kLeftPrimaryID);
   private WPI_TalonFX m_rightPrimary = new WPI_TalonFX(Config.kRightPrimaryID);
   private WPI_TalonFX m_leftSecondary = new WPI_TalonFX(Config.kLeftSecondaryID);
@@ -58,46 +63,41 @@ public class Drivetrain extends SubsystemBase {
 
 
   public void calibrateGyro(){
-    // essentially reset it to 0
     m_gyro.calibrate();
   }
 
+  // yaw will change if the robot spins around in a circle
   public double getTotalAngle(){
-    // mod 360 if you want an "actual value"
     return m_gyro.getAngle();
   }
 
-  // this is the method/angle used for the auto balance -roborio is tilted
   public double getAngle(){
-    // returns angle from 0-360
-    return getRoll();
-    // return m_gyro.getAngle() - 360*(int)(m_gyro.getAngle()/360);
+    return m_gyro.getAngle() - 360*(int)(m_gyro.getAngle()/360);
   }
 
 
+  // if you tilt the robot sideways (not the way it goes up on charge station) pitch will move accordingly
   public double getPitch(){
-    // higher pitch - bot is doing a wheelie
-    // lower pitch - bot just landed a jump
-
     return m_gyro.getPitch(); 
   }
 
+  // roll will change if the robot tilts upward (whilst moving foward, e.g. going up the charge station)
   public double getRoll(){
-    // higher roll - Bot is leaning towards the right
-    // lower roll - bot is leaning towards the left
-
     return m_gyro.getRoll();
   }
 
   public double getRegRoll(){
-    // regular roll - essentially so ur roll isnt at 10000 degrees
     return m_gyro.getRoll() - 360*(int)(m_gyro.getAngle()/360);
   }
-
+ 
 
 
   @Override
   public void periodic() {
+    SmartDashboard.putNumber("Roll angle", getRoll());
+    SmartDashboard.putNumber("Yaw angle", getAngle());
+    SmartDashboard.putNumber("Pitch Angle", getPitch());
+    
     // This method will be called once per scheduler run
   }
 }

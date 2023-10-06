@@ -15,7 +15,7 @@ public class GyroBalance extends CommandBase {
     public static final double kSpeed = 0.3;
 
     // this is a degree measure
-    public static final double kDeadband = 0.2;
+    public static final double kDeadband = 0.05;
 
     // this directly controls kSpeed and should be figured out by testing
     // essentially controls how fast the robot is when its balancing
@@ -74,7 +74,7 @@ public class GyroBalance extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return m_drivetrain.getAngle() - m_initPosition <= Config.kDeadband && m_drivetrain.getAngle() - m_initPosition >= -Config.kDeadband && m_timer.hasElapsed(7);
+    return m_drivetrain.getAngle() - m_initPosition <= Config.kDeadband && m_drivetrain.getAngle() - m_initPosition <= -Config.kDeadband;
     // return false;
   }
 }

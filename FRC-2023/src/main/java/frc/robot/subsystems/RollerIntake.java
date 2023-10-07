@@ -25,31 +25,31 @@ public class RollerIntake extends SubsystemBase {
 
   /** Creates a new RollerIntake. */
   private CANSparkMax m_coneIntakeMotor = new CANSparkMax(Config.kConeIntakeMotorID, MotorType.kBrushless); 
-  private CANSparkMax m_cubeIntakeMotor = new CANSparkMax(Config.kCubeIntakeMotorID, MotorType.kBrushless);
+  //private CANSparkMax m_cubeIntakeMotor = new CANSparkMax(Config.kCubeIntakeMotorID, MotorType.kBrushless);
 
   public RollerIntake() {
-    m_cubeIntakeMotor.setInverted(true);
+    //m_cubeIntakeMotor.setInverted(true);
     m_coneIntakeMotor.setInverted(true);
 
     //Sets current limits to 20 (stall) and 30 (free)
     m_coneIntakeMotor.setSmartCurrentLimit(15, 15);
-    m_cubeIntakeMotor.setSmartCurrentLimit(15, 15);
+    // m_cubeIntakeMotor.setSmartCurrentLimit(15, 15);
     
     m_coneIntakeMotor.setIdleMode(IdleMode.kBrake);
-    m_cubeIntakeMotor.setIdleMode(IdleMode.kBrake);
+    // m_cubeIntakeMotor.setIdleMode(IdleMode.kBrake);
 
     m_coneIntakeMotor.burnFlash();
-    m_cubeIntakeMotor.burnFlash();
+    // m_cubeIntakeMotor.burnFlash();
   }
 
   public void setCoastMode() {
     m_coneIntakeMotor.setIdleMode(IdleMode.kCoast);
-    m_cubeIntakeMotor.setIdleMode(IdleMode.kCoast);
+    // m_cubeIntakeMotor.setIdleMode(IdleMode.kCoast);
   }
 
   public void setBrakeMode() {
     m_coneIntakeMotor.setIdleMode(IdleMode.kBrake);
-    m_cubeIntakeMotor.setIdleMode(IdleMode.kBrake);
+    // m_cubeIntakeMotor.setIdleMode(IdleMode.kBrake);
   }
 
   public void setConeForward(){
@@ -61,7 +61,7 @@ public class RollerIntake extends SubsystemBase {
   }
 
   public void setCubeForward(){
-    m_cubeIntakeMotor.set(Config.kIntakeSpeed);
+    // m_cubeIntakeMotor.set(Config.kIntakeSpeed);
   }
 
   public InstantCommand intakeCube(){
@@ -77,7 +77,7 @@ public class RollerIntake extends SubsystemBase {
   }
 
   public void setCubeReverse(){
-    m_cubeIntakeMotor.set(-Config.kIntakeSpeed);
+    // m_cubeIntakeMotor.set(-Config.kIntakeSpeed);
   }
 
   public InstantCommand ejectCube(){
@@ -85,7 +85,7 @@ public class RollerIntake extends SubsystemBase {
   }
 
   public void setCubeOff(){
-    m_cubeIntakeMotor.set(0);
+    // m_cubeIntakeMotor.set(0);
   }
 
   public InstantCommand turnOffCube(){
@@ -103,7 +103,7 @@ public class RollerIntake extends SubsystemBase {
   //Combined intake code
   public void setIntakeIn() {
     m_coneIntakeMotor.set(Config.kIntakeSpeed);
-    m_cubeIntakeMotor.set(Config.kIntakeSpeed);
+    // m_cubeIntakeMotor.set(Config.kIntakeSpeed);
   }
 
   public InstantCommand turnOnIntake() {
@@ -112,7 +112,7 @@ public class RollerIntake extends SubsystemBase {
 
   public void setIntakeOut() {
     m_coneIntakeMotor.set(-Config.kIntakeSpeed);
-    m_cubeIntakeMotor.set(-Config.kIntakeSpeed);
+    // m_cubeIntakeMotor.set(-Config.kIntakeSpeed);
   }
 
   public InstantCommand turnEjectIntake() {
@@ -121,7 +121,7 @@ public class RollerIntake extends SubsystemBase {
   
   public void setIntakeOff() {
     m_coneIntakeMotor.set(0);
-    m_cubeIntakeMotor.set(0);
+    // m_cubeIntakeMotor.set(0);
   }
 
   public InstantCommand turnOffIntake() {

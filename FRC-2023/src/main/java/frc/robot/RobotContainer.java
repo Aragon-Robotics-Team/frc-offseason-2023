@@ -24,6 +24,8 @@ import frc.robot.commands.Drivetrain.ArcadeDrive;
 import frc.robot.commands.Drivetrain.DriveForward;
 import frc.robot.commands.Drivetrain.DriveForwardPID;
 import frc.robot.commands.Drivetrain.ForwardForTime;
+import frc.robot.commands.Drivetrain.SetBrake;
+import frc.robot.commands.Drivetrain.SetCoast;
 import frc.robot.commands.Drivetrain.DrivetrainIdle;
 
 // import frc.robot.commands.Elevator.EncoderTest;
@@ -39,6 +41,7 @@ import frc.robot.commands.IntakeArm.ArmDown;
 import frc.robot.commands.IntakeArm.GoToAngle;
 import frc.robot.commands.IntakeArm.GoToAngleSmart;
 import frc.robot.commands.IntakeArm.JoystickArm;
+import frc.robot.commands.IntakeArm.OpenServo;
 import frc.robot.commands.IntakeArm.RecalibrateArm;
 
 import frc.robot.commands.Limelight.AutoTrackPole;
@@ -77,7 +80,8 @@ public class RobotContainer {
     */
     public static final int kSlowModeAxis = 3;
 
-
+    public static final int kSetBrakeID = 5;
+    public static final int kSetCoastID = 6;
     // Intake 
     public static final int kIntakeInID = 1;
     public static final int kIntakeOutID = 2;
@@ -158,8 +162,10 @@ public class RobotContainer {
 
   private GoToAngleSmart m_lowScoreArm = new GoToAngleSmart(m_arm, 46.5, m_secondJoystick); //RETEST FOR NEW VALUES
   private GoToAngleSmart m_highScoreArm = new GoToAngleSmart(m_arm, 58, m_secondJoystick);
-  private GoToAngleSmart m_humanPlayerArm = new GoToAngleSmart(m_arm, 55, m_secondJoystick);
+  private GoToAngleSmart m_humanPlayerArm = new GoToAngleSmart(m_arm, 52, m_secondJoystick);
   private GoToAngleSmart m_retractArm = new GoToAngleSmart(m_arm, 1.5, m_secondJoystick);
+
+  private OpenServo m_openServo = new OpenServo(m_arm);
 
   //Elevator + Arm Scoring Parallel Groups
   private ParallelCommandGroup m_lowScore = new ParallelCommandGroup(m_lowScoreArm, m_lowScoreElevator);
@@ -290,6 +296,10 @@ public class RobotContainer {
    * @return the command to run in autonomous
   */
 
+public Command getOpenServo(){
+  return m_openServo;
+}
+
  public Command getAutonomousCommand() {
     
     // used for testing limelight functionality - testing if it can track reflective tape
@@ -300,8 +310,8 @@ public class RobotContainer {
 
   public Command getTeleopCommand(){
     m_drivetrain.setDefaultCommand(m_arcadeDrive);
-    // m_elevator.setDefaultCommand(m_joystickElevator);
-    // m_arm.setDefaultCommand(m_joystickArm);
+    m_elevator.setDefaultCommand(m_joystickElevator);
+    m_arm.setDefaultCommand(m_joystickArm);
 
     // m_limelight.setDefaultCommand(m_track);
     // m_turret.setDefaultCommand(m_test);

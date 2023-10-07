@@ -18,7 +18,7 @@ public class ArcadeDrive extends CommandBase {
     private static final double kFastSpeedMultiplier = 0.75;
     private static final double kFastTurnMultiplier = 0.7;
 
-    private static final double kSlowSpeedMultiplier = 0.425;
+    private static final double kSlowSpeedMultiplier = 1.025;
     private static final double kSlowTurnMultiplier = 0.4;
     private static final double kSlowTriggerThreshold = 0.1;
   }
@@ -56,8 +56,8 @@ public class ArcadeDrive extends CommandBase {
       
       turn = -m_joystick.getRawAxis(Config.kRightStickZ)*Config.kFastTurnMultiplier;
     } else {
-      speed = -modifiedAxis*Config.kSlowSpeedMultiplier;
-      turn = -m_joystick.getRawAxis(Config.kRightStickZ)*Config.kSlowTurnMultiplier;
+      speed = -modifiedAxis*Config.kSlowSpeedMultiplier*(1.0 - m_joystick.getRawAxis(m_joystickAxis));
+      turn = -m_joystick.getRawAxis(Config.kRightStickZ)*Config.kSlowTurnMultiplier*(1.0 - m_joystick.getRawAxis(m_joystickAxis));
     }
 
 

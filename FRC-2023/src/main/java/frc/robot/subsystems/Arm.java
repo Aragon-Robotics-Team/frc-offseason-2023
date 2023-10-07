@@ -10,6 +10,7 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -23,11 +24,14 @@ public class Arm extends SubsystemBase {
     public static final double kV = 0.01;
     public static final double kG = 0.01;
     public static final double kA = 0.01;
+
+    public static final int kServoChannel = 8;
   }
   
   private CANSparkMax m_armMotor = new CANSparkMax(Config.kArmMotorID, MotorType.kBrushless);
   private DigitalInput m_bottomSwitch = new DigitalInput(0);
   private DigitalInput m_topSwitch = new DigitalInput(3);
+  private Servo m_servo = new Servo(Config.kServoChannel);
 
   public Arm() {
 
@@ -41,6 +45,10 @@ public class Arm extends SubsystemBase {
    m_armMotor.setSmartCurrentLimit(40, 40);
 
    m_armMotor.burnFlash();
+  }
+
+  public void openServo(){
+    m_servo.set(0.25);
   }
 
   public void setCoastMode() {

@@ -3,11 +3,13 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 package frc.robot.subsystems;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.ctre.phoenix.music.Orchestra;
 
 // import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import com.kauailabs.navx.frc.AHRS;
+import com.revrobotics.CANSparkMax.IdleMode;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.SPI;
@@ -59,9 +61,6 @@ public class Drivetrain extends SubsystemBase {
     m_leftPrimary.setSelectedSensorPosition(0.0);
   }
 
-
-
-
   public void calibrateGyro(){
     m_gyro.calibrate();
   }
@@ -90,14 +89,25 @@ public class Drivetrain extends SubsystemBase {
     return m_gyro.getRoll() - 360*(int)(m_gyro.getAngle()/360);
   }
  
+  public void setBrake(){
+    m_leftPrimary.setNeutralMode(NeutralMode.Brake);
+    m_rightPrimary.setNeutralMode(NeutralMode.Brake);
+    m_leftSecondary.setNeutralMode(NeutralMode.Brake);
+    m_rightSecondary.setNeutralMode(NeutralMode.Brake);
+  }
 
+  public void setCoast(){
+    m_leftPrimary.setNeutralMode(NeutralMode.Coast);
+    m_rightPrimary.setNeutralMode(NeutralMode.Coast);
+    m_leftSecondary.setNeutralMode(NeutralMode.Coast);
+    m_rightSecondary.setNeutralMode(NeutralMode.Coast);
+  }
 
   @Override
   public void periodic() {
     SmartDashboard.putNumber("Roll angle", getRoll());
     SmartDashboard.putNumber("Yaw angle", getAngle());
     SmartDashboard.putNumber("Pitch Angle", getPitch());
-    
     // This method will be called once per scheduler run
   }
 }

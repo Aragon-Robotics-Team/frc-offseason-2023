@@ -229,7 +229,7 @@ public class RobotContainer {
   public RobotContainer() {
     // syntax: name, command
     // Taxi/Simple Auto
-    m_autoChooser.setDefaultOption("release_arm_auto", m_releaseArm);
+    //m_autoChooser.setDefaultOption("release_arm_auto", m_releaseArm);
     m_autoChooser.addOption("move_back_auto_short", m_autoSequenceShort); //EVENTUALLY RENAME TO TAXI AUTO
     m_autoChooser.addOption("move_back_auto_long", m_autoSequenceLong); //SEE ABOVE
 

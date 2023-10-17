@@ -7,7 +7,6 @@ package frc.robot.commands.Drivetrain;
 
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.subsystems.Drivetrain;
 
 public class ForwardForTime extends CommandBase {
@@ -32,8 +31,8 @@ public class ForwardForTime extends CommandBase {
   @Override
   public void initialize() {
     m_drivetrain.getDrive().tankDrive(Config.k_wheelSpeed, Config.k_wheelSpeed);
-   m_timer.reset();
-   m_timer.start();
+    m_timer.reset();
+    m_timer.start();
   }
 
   // Called every time the scheduler runs while the command is scheduled.

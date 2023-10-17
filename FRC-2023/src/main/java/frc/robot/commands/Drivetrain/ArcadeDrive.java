@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Drivetrain;
+
 public class ArcadeDrive extends CommandBase {
   /** Creates a new ArcadeDrive. */
   private static final class Config{
@@ -17,7 +18,7 @@ public class ArcadeDrive extends CommandBase {
     private static final double kFastSpeedMultiplier = 0.75;
     private static final double kFastTurnMultiplier = 0.7;
 
-    private static final double kSlowSpeedMultiplier = 0.425;
+    private static final double kSlowSpeedMultiplier = 0.4;
     private static final double kSlowTurnMultiplier = 0.4;
     private static final double kSlowTriggerThreshold = 0.1;
   }
@@ -51,15 +52,15 @@ public class ArcadeDrive extends CommandBase {
     double speed, turn;
     if (m_joystick.getRawAxis(m_joystickAxis) < Config.kSlowTriggerThreshold) {
       speed = -modifiedAxis*Config.kFastSpeedMultiplier;
+
       turn = -m_joystick.getRawAxis(Config.kRightStickZ)*Config.kFastTurnMultiplier;
     } else {
       speed = -modifiedAxis*Config.kSlowSpeedMultiplier;
       turn = -m_joystick.getRawAxis(Config.kRightStickZ)*Config.kSlowTurnMultiplier;
-    }
-
-
+      } 
     m_drivetrain.getDrive().arcadeDrive(speed, turn, true);
-  }
+    }   
+   
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {

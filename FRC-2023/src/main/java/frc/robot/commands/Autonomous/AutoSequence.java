@@ -11,6 +11,8 @@ import frc.robot.subsystems.Drivetrain;
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
+
+
 public class AutoSequence extends SequentialCommandGroup {
   /** Creates a new AutoSequence. */
   public AutoSequence(Drivetrain drivetrain, Arm arm, double timeInSecs) {

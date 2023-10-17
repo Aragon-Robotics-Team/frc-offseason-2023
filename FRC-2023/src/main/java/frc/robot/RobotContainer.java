@@ -17,12 +17,15 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 // auto sequences
 import frc.robot.commands.Autonomous.AutoSequence;
 import frc.robot.commands.Autonomous.ScoreLowAuto;
+import frc.robot.commands.Autonomous.TwoPiece;
 import frc.robot.commands.Autonomous.ReleaseArm;
 import frc.robot.commands.Autonomous.ScoreHighAuto;
 import frc.robot.commands.Drivetrain.ArcadeDrive;
 import frc.robot.commands.Drivetrain.DriveForward;
 import frc.robot.commands.Drivetrain.DriveForwardPID;
 import frc.robot.commands.Drivetrain.ForwardForTime;
+import frc.robot.commands.Drivetrain.SetBrake;
+import frc.robot.commands.Drivetrain.SetCoast;
 import frc.robot.commands.Drivetrain.DrivetrainIdle;
 
 // import frc.robot.commands.Elevator.EncoderTest;
@@ -32,11 +35,13 @@ import frc.robot.commands.Elevator.ElevatorExtensionModes.ExtendElevator;
 import frc.robot.commands.Elevator.ElevatorExtensionModes.ExtendElevatorSmart;
 
 import frc.robot.commands.Gyro.GyroBalance;
+import frc.robot.commands.Autonomous.GyroBalanceNoArm;
 
 import frc.robot.commands.IntakeArm.ArmDown;
 import frc.robot.commands.IntakeArm.GoToAngle;
 import frc.robot.commands.IntakeArm.GoToAngleSmart;
 import frc.robot.commands.IntakeArm.JoystickArm;
+import frc.robot.commands.IntakeArm.OpenServo;
 import frc.robot.commands.IntakeArm.RecalibrateArm;
 
 import frc.robot.commands.Limelight.AutoTrackPole;
@@ -75,7 +80,8 @@ public class RobotContainer {
     */
     public static final int kSlowModeAxis = 3;
 
-
+    public static final int kSetBrakeID = 5;
+    public static final int kSetCoastID = 6;
     // Intake 
     public static final int kIntakeInID = 1;
     public static final int kIntakeOutID = 2;
@@ -156,8 +162,10 @@ public class RobotContainer {
 
   private GoToAngleSmart m_lowScoreArm = new GoToAngleSmart(m_arm, 46.5, m_secondJoystick); //RETEST FOR NEW VALUES
   private GoToAngleSmart m_highScoreArm = new GoToAngleSmart(m_arm, 58, m_secondJoystick);
-  private GoToAngleSmart m_humanPlayerArm = new GoToAngleSmart(m_arm, 55, m_secondJoystick);
+  private GoToAngleSmart m_humanPlayerArm = new GoToAngleSmart(m_arm, 52, m_secondJoystick);
   private GoToAngleSmart m_retractArm = new GoToAngleSmart(m_arm, 1.5, m_secondJoystick);
+
+  private OpenServo m_openServo = new OpenServo(m_arm);
 
   //Elevator + Arm Scoring Parallel Groups
   private ParallelCommandGroup m_lowScore = new ParallelCommandGroup(m_lowScoreArm, m_lowScoreElevator);
@@ -195,6 +203,12 @@ public class RobotContainer {
 
   private ScoreHighAuto m_simpleHighAuto = new ScoreHighAuto(m_arm, m_elevator, m_rollerIntake, m_drivetrain, 0);
   private ScoreHighAuto m_highScoreAutoShort = new ScoreHighAuto(m_arm, m_elevator, m_rollerIntake, m_drivetrain, Config.kTimeInSecsFast);
+
+  private GyroBalanceNoArm m_gyroBalanceNoPiece = new GyroBalanceNoArm(m_drivetrain);
+
+  // time is experimental - needs to be tested
+  private TwoPiece m_twoPiece = new TwoPiece(m_arm, m_elevator, m_rollerIntake, m_drivetrain, 1.5);
+
   
   // private Limelight m_limelight = new Limelight();
   // private Turret m_turret = new Turret();
@@ -215,7 +229,7 @@ public class RobotContainer {
   public RobotContainer() {
     // syntax: name, command
     // Taxi/Simple Auto
-    m_autoChooser.setDefaultOption("release_arm_auto", m_releaseArm);
+    //m_autoChooser.setDefaultOption("release_arm_auto", m_releaseArm);
     m_autoChooser.addOption("move_back_auto_short", m_autoSequenceShort); //EVENTUALLY RENAME TO TAXI AUTO
     m_autoChooser.addOption("move_back_auto_long", m_autoSequenceLong); //SEE ABOVE
 
@@ -227,6 +241,13 @@ public class RobotContainer {
     // High Score Autos
     m_autoChooser.addOption("high_auto_short", m_highScoreAutoShort);
     m_autoChooser.addOption("simple_high_auto", m_simpleHighAuto);
+
+    // gyro balance auto (NO PIECE)
+    // Robot MUST be facing away from the scoring grid
+    m_autoChooser.addOption("gyro_balance_no_piece", m_gyroBalanceNoPiece);
+    
+    // two piece (needs to be tested)
+    m_autoChooser.addOption("two_piece", m_twoPiece);
 
     SmartDashboard.putData(m_autoChooser);
 
@@ -275,6 +296,10 @@ public class RobotContainer {
    * @return the command to run in autonomous
   */
 
+public Command getOpenServo(){
+  return m_openServo;
+}
+
  public Command getAutonomousCommand() {
     
     // used for testing limelight functionality - testing if it can track reflective tape
@@ -285,8 +310,8 @@ public class RobotContainer {
 
   public Command getTeleopCommand(){
     m_drivetrain.setDefaultCommand(m_arcadeDrive);
-    // m_elevator.setDefaultCommand(m_joystickElevator);
-    // m_arm.setDefaultCommand(m_joystickArm);
+    m_elevator.setDefaultCommand(m_joystickElevator);
+    m_arm.setDefaultCommand(m_joystickArm);
 
     // m_limelight.setDefaultCommand(m_track);
     // m_turret.setDefaultCommand(m_test);

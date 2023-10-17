@@ -9,7 +9,11 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.commands.Elevator.RecalibrateElevator;
+import frc.robot.commands.IntakeArm.OpenServo;
+import frc.robot.commands.IntakeArm.RecalibrateArm;
+import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Drivetrain;
 
 /**
@@ -25,6 +29,8 @@ public class Robot extends TimedRobot {
   private RobotContainer m_robotContainer;
 
   private RecalibrateElevator m_recalibrateElevator;
+  private RecalibrateArm m_recalibrateArm;
+
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -72,6 +78,8 @@ public class Robot extends TimedRobot {
 
     // schedule the autonomous command (example)
     if (m_autonomousCommand != null) {
+      m_robotContainer.getOpenServo().schedule();;
+      new WaitCommand(2);
       m_autonomousCommand.schedule();
     }
   }
@@ -95,6 +103,7 @@ public class Robot extends TimedRobot {
     m_teleopCommand = m_robotContainer.getTeleopCommand();
     if (m_teleopCommand != null){
       m_recalibrateElevator.schedule();
+      m_recalibrateArm.schedule();
       m_teleopCommand.schedule();
     }
   }

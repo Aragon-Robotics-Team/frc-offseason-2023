@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj.SPI;
 
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 public class Drivetrain extends SubsystemBase {
   
@@ -33,6 +34,7 @@ public class Drivetrain extends SubsystemBase {
   private WPI_TalonFX m_leftSecondary = new WPI_TalonFX(Config.kLeftSecondaryID);
   private WPI_TalonFX m_rightSecondary = new WPI_TalonFX(Config.kRightSecondaryID);
   private DifferentialDrive m_drive = new DifferentialDrive(m_leftPrimary, m_rightPrimary);
+  private double m_initAngle = 0.0;
 
   // private ADXRS450_Gyro m_gyro  = new ADXRS450_Gyro();
   private AHRS m_gyro  = new AHRS(SPI.Port.kMXP);
@@ -71,7 +73,8 @@ public class Drivetrain extends SubsystemBase {
   }
 
   public double getAngle(){
-    return m_gyro.getAngle() - 360*(int)(m_gyro.getAngle()/360);
+    // return m_gyro.getAngle() - 360*(int)(m_gyro.getAngle()/360);
+    return getRoll();
   }
 
 
@@ -101,6 +104,18 @@ public class Drivetrain extends SubsystemBase {
     m_rightPrimary.setNeutralMode(NeutralMode.Coast);
     m_leftSecondary.setNeutralMode(NeutralMode.Coast);
     m_rightSecondary.setNeutralMode(NeutralMode.Coast);
+  }
+
+  private void registerInitAngle() {
+   m_initAngle = getAngle(); 
+  }
+
+  public InstantCommand getRegisterInitAngle() {
+    return new InstantCommand(this::registerInitAngle);
+  }
+
+  public double getInitAngle() {
+    return m_initAngle;
   }
 
   @Override

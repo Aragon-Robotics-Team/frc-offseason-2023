@@ -150,7 +150,7 @@ public class RobotContainer {
   // Elevator Extensions: Pass in encoder ticks for specific angle
   private ExtendElevatorSmart m_lowScoreElevator = new ExtendElevatorSmart(m_elevator, -44); //Originally -61
   private ExtendElevatorSmart m_highScoreElevator = new ExtendElevatorSmart(m_elevator, -57);
-  private ExtendElevatorSmart m_humanPlayerElevator = new ExtendElevatorSmart(m_elevator, -56);
+  private ExtendElevatorSmart m_humanPlayerElevator = new ExtendElevatorSmart(m_elevator, -52);
 
   // Arm
   private Arm m_arm = new Arm();
@@ -162,7 +162,7 @@ public class RobotContainer {
 
   private GoToAngleSmart m_lowScoreArm = new GoToAngleSmart(m_arm, 46.5, m_secondJoystick); //RETEST FOR NEW VALUES
   private GoToAngleSmart m_highScoreArm = new GoToAngleSmart(m_arm, 58, m_secondJoystick);
-  private GoToAngleSmart m_humanPlayerArm = new GoToAngleSmart(m_arm, 52, m_secondJoystick);
+  private GoToAngleSmart m_humanPlayerArm = new GoToAngleSmart(m_arm, 48, m_secondJoystick);
   private GoToAngleSmart m_retractArm = new GoToAngleSmart(m_arm, 1.5, m_secondJoystick);
 
   private OpenServo m_openServo = new OpenServo(m_arm);
@@ -239,7 +239,7 @@ public class RobotContainer {
     m_autoChooser.addOption("simple_low_auto", m_simpleLowAuto);
 
     // High Score Autos
-    m_autoChooser.addOption("high_auto_short", m_highScoreAutoShort);
+    m_autoChooser.setDefaultOption("high_auto_short", m_highScoreAutoShort);
     m_autoChooser.addOption("simple_high_auto", m_simpleHighAuto);
 
     // gyro balance auto (NO PIECE)
